@@ -25,15 +25,10 @@ services:
       - key: N8N_PROTOCOL
         value: https
       - key: N8N_PORT
-        value: 10000
-      
+        value: 10000        
       # Webhook URL (будет автоматически подставлен)
-      #- key: WEBHOOK_URL
-      #  fromService:
-      #    type: web
-      #    name: n8n-service
-      #    property: host
-      
+      - key: WEBHOOK_URL
+        value: $(N8N_HOST).onrender.com  
       # База данных PostgreSQL
       - key: DB_TYPE
         value: postgresdb
