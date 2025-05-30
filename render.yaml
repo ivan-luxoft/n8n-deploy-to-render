@@ -17,11 +17,11 @@ services:
     healthCheckPath: /healthz
     envVars:
       # Основные настройки n8n
-      - key: N8N_HOST
-        fromService:
-          type: web
-          name: n8n-service
-          property: host
+      #- key: N8N_HOST
+      #  fromService:
+      #    type: web
+      #    name: n8n-service
+      #    property: host
       - key: N8N_PROTOCOL
         value: https
       - key: N8N_PORT
