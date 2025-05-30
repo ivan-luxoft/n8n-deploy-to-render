@@ -4,7 +4,7 @@
 
 ## 🚀 Быстрое развертывание
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://dev.azure.com/ivangubanov0601/_git/n8n-deploy-to-render)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fivan-luxoft%2Fn8n-deploy-to-render)
 
 ## 📁 Структура файлов
 
