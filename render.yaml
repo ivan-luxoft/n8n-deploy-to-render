@@ -1,14 +1,11 @@
 # render.yaml для развертывания n8n с PostgreSQL на Render.com
+databases:
+  - name: n8n-postgres
+    databaseName: n8n
+    user: n8n_user
+    plan: free
+
 services:
-  # PostgreSQL база данных
-  - type: pserv
-    name: n8n-postgres
-    env: docker
-    plan: free  # можно изменить на starter/standard для production
-    region: oregon  # выберите ближайший регион
-    databases:
-      - name: n8n
-        user: n8n_user
 
   # N8N веб-сервис
   - type: web
