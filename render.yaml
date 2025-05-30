@@ -28,7 +28,7 @@ services:
         value: 10000        
       # Webhook URL (будет автоматически подставлен)
       - key: WEBHOOK_URL
-        value: $(N8N_HOST).onrender.com  
+        value: https://$(N8N_HOST).onrender.com  
       # База данных PostgreSQL
       - key: DB_TYPE
         value: postgresdb
