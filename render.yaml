@@ -1,0 +1,115 @@
+# render.yaml для развертывания n8n с PostgreSQL на Render.com
+services:
+  # PostgreSQL база данных
+  - type: pserv
+    name: n8n-postgres
+    env: docker
+    plan: free  # можно изменить на starter/standard для production
+    region: oregon  # выберите ближайший регион
+    databases:
+      - name: n8n
+        user: n8n_user
+
+  # N8N веб-сервис
+  - type: web
+    name: n8n-service
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free  # можно изменить на starter/standard для production
+    region: oregon
+    healthCheckPath: /healthz
+    envVars:
+      # Основные настройки n8n
+      - key: N8N_HOST
+        fromService:
+          type: web
+          name: n8n-service
+          property: host
+      - key: N8N_PROTOCOL
+        value: https
+      - key: N8N_PORT
+        value: 10000
+      
+      # Webhook URL (будет автоматически подставлен)
+      - key: WEBHOOK_URL
+        fromService:
+          type: web
+          name: n8n-service
+          property: host
+      
+      # База данных PostgreSQL
+      - key: DB_TYPE
+        value: postgresdb
+      - key: DB_POSTGRESDB_HOST
+        fromDatabase:
+          name: n8n-postgres
+          property: host
+      - key: DB_POSTGRESDB_PORT
+        fromDatabase:
+          name: n8n-postgres
+          property: port
+      - key: DB_POSTGRESDB_DATABASE
+        fromDatabase:
+          name: n8n-postgres
+          property: database
+      - key: DB_POSTGRESDB_USER
+        fromDatabase:
+          name: n8n-postgres
+          property: user
+      - key: DB_POSTGRESDB_PASSWORD
+        fromDatabase:
+          name: n8n-postgres
+          property: password
+      
+      # Настройки безопасности
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true  # Render автоматически сгенерирует ключ
+      - key: N8N_USER_MANAGEMENT_JWT_SECRET
+        generateValue: true  # Render автоматически сгенерирует секрет
+      
+      # Дополнительные настройки (раскомментируйте при необходимости)
+      # - key: N8N_BASIC_AUTH_ACTIVE
+      #   value: true
+      # - key: N8N_BASIC_AUTH_USER
+      #   value: admin
+      # - key: N8N_BASIC_AUTH_PASSWORD
+      #   sync: false  # Установите через UI Render
+      
+      # Настройки воркеров (для больших нагрузок)
+      # - key: EXECUTIONS_MODE
+      #   value: queue
+      # - key: N8N_PAYLOAD_SIZE_MAX
+      #   value: 16
+      
+      # Настройки логов
+      - key: N8N_LOG_LEVEL
+        value: info
+      - key: N8N_LOG_OUTPUT
+        value: console
+      
+      # Настройки для production
+      - key: NODE_ENV
+        value: production
+      - key: N8N_METRICS
+        value: true
+
+# Опциональный воркер для обработки тяжелых задач
+  # - type: worker
+  #   name: n8n-worker
+  #   env: docker
+  #   dockerfilePath: ./Dockerfile.worker
+  #   plan: free
+  #   region: oregon
+  #   envVars:
+  #     # Все те же переменные базы данных
+  #     - key: DB_TYPE
+  #       value: postgresdb
+  #     - key: DB_POSTGRESDB_HOST
+  #       fromDatabase:
+  #         name: n8n-postgres
+  #         property: host
+  #     # ... остальные переменные БД
+  #     
+  #     # Воркер-специфичные настройки
+  #     - key: N8N_WORKER_TYPE
+  #       value: main
