@@ -17,22 +17,22 @@ services:
     healthCheckPath: /healthz
     envVars:
       # Основные настройки n8n
-      #- key: N8N_HOST
-      #  fromService:
-      #    type: web
-      #    name: n8n-service
-      #    property: host
+      - key: N8N_HOST
+        fromService:
+          type: web
+          name: n8n-service
+          property: host
       - key: N8N_PROTOCOL
         value: https
       - key: N8N_PORT
         value: 10000
       
       # Webhook URL (будет автоматически подставлен)
-      - key: WEBHOOK_URL
-        fromService:
-          type: web
-          name: n8n-service
-          property: host
+      #- key: WEBHOOK_URL
+      #  fromService:
+      #    type: web
+      #    name: n8n-service
+      #    property: host
       
       # База данных PostgreSQL
       - key: DB_TYPE
